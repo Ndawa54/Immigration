@@ -1,17 +1,23 @@
 import { Box, TextField, Button, Snackbar, Alert } from '@mui/material';
 import React, { useState } from 'react';
 import logo from '../images/logo192.png'; // Adjust the path as necessary
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 export default function Login() {
   const [open, setOpen] = useState(false);
-  const [username, setUsername] = useState(''); // State for username
-  const [password, setPassword] = useState(''); // State for password
+  const [username, setUsername] = useState('');
+  const [password, setPassword] = useState('');
+  const navigate = useNavigate(); // Initialize useNavigate
 
   const handleClick = () => {
-    console.log('Username:', username); // Log username to console
-    console.log('Password:', password); // Log password to console
+    console.log('Username:', username);
+    console.log('Password:', password);
     setOpen(true);
+
+    // Delay navigation to home page
+    setTimeout(() => {
+      navigate('/home'); // Navigate to home after 4 seconds
+    }, 4000);
   };
 
   const handleClose = () => {
@@ -24,15 +30,15 @@ export default function Login() {
         <img src={logo} alt="Logo" style={{ width: '100px', marginBottom: '20px' }} /> {/* Logo Image */}
         <TextField
           label='Username'
-          value={username} // Bind value to state
-          onChange={(e) => setUsername(e.target.value)} // Update state on change
+          value={username}
+          onChange={(e) => setUsername(e.target.value)}
           sx={{ mb: 2, width: 300 }}
         />
         <TextField
           label='Password'
           type='password'
-          value={password} // Bind value to state
-          onChange={(e) => setPassword(e.target.value)} // Update state on change
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
           sx={{ mb: 2, width: 300 }}
         />
         <Button type='submit' variant='outlined' onClick={handleClick}>Submit</Button>

@@ -1,6 +1,7 @@
 import { Logout, Menu, Person } from '@mui/icons-material'
 import { AppBar, Button, Drawer, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Stack, Toolbar, Typography } from '@mui/material'
 import React, { useState } from 'react'
+import { Link } from 'react-router-dom'
 
 
 export default function Navigation() {
@@ -11,8 +12,8 @@ export default function Navigation() {
     }
     return (
         <div>
-            <AppBar>
-                <Toolbar>
+            <AppBar position='static'>
+                <Toolbar >
                     <IconButton color='inherit' onClick={handleClick}>
                         <Menu />
                     </IconButton>
@@ -31,13 +32,13 @@ export default function Navigation() {
 
                     <List sx={{ spacing: '2', width: '30ch', display: 'block', role: 'presentation' }}>
                         <ListItem>
-                            <ListItemButton>
+                            <ListItemButton component={Link} to='/profile'>
                                 <ListItemIcon color='inherit'><Person /></ListItemIcon>
                                 <ListItemText>Profile</ListItemText>
                             </ListItemButton>
                         </ListItem>
                         <ListItem>
-                            <ListItemButton>
+                            <ListItemButton  component={Link} to='/'>
                                 <ListItemIcon color='inherit'><Logout /></ListItemIcon>
                                 <ListItemText>Logout</ListItemText>
                             </ListItemButton>
