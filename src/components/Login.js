@@ -17,7 +17,7 @@ export default function Login() {
     // Delay navigation to home page
     setTimeout(() => {
       navigate('/home'); // Navigate to home after 4 seconds
-    }, 4000);
+    }, 3000);
   };
 
   const handleClose = () => {
