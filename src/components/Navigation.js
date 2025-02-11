@@ -13,7 +13,7 @@ export default function Navigation() {
     return (
         <div>
             <AppBar position='static'>
-                <Toolbar >
+                <Toolbar sx={{backgroundColor:'#40b8ea', padding:1,}} >
                     <IconButton color='inherit' onClick={handleClick}>
                         <Menu />
                     </IconButton>
@@ -29,7 +29,7 @@ export default function Navigation() {
 
                 </Toolbar>
                 <Drawer anchor="left" open={open} onClose={() => { setOpen(false) }} >
-
+                    <Typography variant="h6" component="div" sx={{ fontSize: 15, mt: 2, ml: 2 }} > Menu </Typography>
                     <List sx={{ spacing: '2', width: '30ch', display: 'block', role: 'presentation' }}>
                         <ListItem>
                             <ListItemButton component={Link} to='/profile'>
@@ -38,7 +38,7 @@ export default function Navigation() {
                             </ListItemButton>
                         </ListItem>
                         <ListItem>
-                            <ListItemButton  component={Link} to='/'>
+                            <ListItemButton component={Link} to='/'>
                                 <ListItemIcon color='inherit'><Logout /></ListItemIcon>
                                 <ListItemText>Logout</ListItemText>
                             </ListItemButton>

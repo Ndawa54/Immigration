@@ -1,4 +1,4 @@
-import { Box, Button, FormControl, InputAdornment, InputLabel, OutlinedInput, TextField } from '@mui/material'
+import { Box, Button, FormControl, InputAdornment, InputLabel, OutlinedInput, Paper, TextField } from '@mui/material'
 import React, { useState } from 'react'
 import { Link } from 'react-router-dom'
 
@@ -22,7 +22,9 @@ export default function Register() {
     }
     return (
         <div>
-            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', m: 2, p: 2 }}>
+             <Paper elevation={5} sx={{m:4}}>
+            <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', m: 2 }}>
+                <h2>Register</h2>
                 <TextField
                     label='Name in Full'
                     value={fullname}
@@ -92,9 +94,10 @@ export default function Register() {
                     label='Confirm Password'
                     sx={{ mb: 2, width: '50ch' }} required />
                     
-                <Button color='inherit' variant='outlined' onClick={handleClick}>Register</Button>
+                <Button color='primary' variant='contained' onClick={handleClick} sx={{mb:4}}>Register</Button>
                
             </Box>
+            </Paper>
         </div>
     )
 }
