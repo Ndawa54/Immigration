@@ -15,18 +15,18 @@ export default function Home() {
   return (
     <div>
       <Navigation/>
-      {/* <Box>
+      <Box>
         <Tabs value={activeTab} onChange={(e, newValue) => setActiveTab(newValue)}>
           <Tab label="Application Consent" />
           <Tab label="Interviews" disabled={applicationConsent === 'pending'} />
           <Tab label="Payment" disabled={interviewApproval !== 'approved'} />
         </Tabs>
-      </Box> */}
+      </Box>
       <div>
         {/* Show the form only in the Application Consent tab */}
         {activeTab === 0 && (
           <div>
-            {/* <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center', p: 2, mt: 4,}}>
+            <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center', p: 2, mt: 4,}}>
             <TextField 
               label="Name" 
               value={name} 
@@ -40,7 +40,7 @@ export default function Home() {
               sx={{mb: 2,width: '30ch'}}
             />
             <Button onClick={() => setApplicationConsent('approved')} variant='outlined'>Submit</Button>
-            </Box> */}
+            </Box>
             
           </div>
         )}
@@ -87,7 +87,7 @@ export default function Home() {
         </div>}
       </div>
       <div>
-        {/* <button onClick={() => setInterviewApproval('approved')}>Enable Payments Approved</button> */}
+        <button onClick={() => setInterviewApproval('approved')}>Enable Payments Approved</button>
       </div>
     </div>
   )

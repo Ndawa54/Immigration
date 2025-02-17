@@ -16,7 +16,7 @@ export default function Login() {
 
     // Delay navigation to home page
     setTimeout(() => {
-      navigate('/home'); // Navigate to home after 4 seconds
+      navigate('/dashboard'); // Navigate to home after 4 seconds
     }, 3000);
   };
 
