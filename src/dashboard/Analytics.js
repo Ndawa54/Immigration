@@ -1,96 +1,115 @@
-import { Card, CardContent, Grid2, Stack, Typography } from '@mui/material';
-import { Bar } from 'react-chartjs-2';
+import { Card, CardContent, Grid2, Icon, Stack, Typography } from '@mui/material';
 import React from 'react';
 import DashboardNav from './DashboardNav';
-import { BarChart } from '@mui/x-charts';
-
-const data = {
-    labels: ['Approved', 'Rejected', 'Pending'],
-    datasets: [
-        {
-            label: 'Counts',
-            data: [9, 5, 2], // Replace with actual pending count
-            backgroundColor: [
-                'rgba(139, 195, 74, 0.6)',
-                'rgba(211, 83, 83, 0.6)',
-                'rgba(0, 131, 143, 0.6)',
-            ],
-            borderWidth: 1,
-        },
-    ],
-};
-
-const options = {
-    scales: {
-        y: {
-            beginAtZero: true,
-        },
-    },
-};
-
+import { BarChart, PieChart } from '@mui/x-charts';
+import { CheckCircleOutline, Checklist, HighlightOff, Task } from '@mui/icons-material';
 
 export default function Analytics() {
     return (
         <>
             <DashboardNav />
             <Stack spacing={2}>
-                <Grid2 container spacing={1} sx={{ml:5,}}>
-                    <Grid2 size={{ xs: 7, sm: 3 }}>
-                        <Card sx={{ m: 3, width: 160, height: 120, backgroundColor: '#8bc34a', color: 'white' }}>
-                            <CardContent>
-                                <Typography variant="h5" component="div">Approved</Typography>
+                <Grid2 container spacing={2} justifyContent="center" alignItems="center">
+                    <Grid2 item xs={12} sm={6} md={4}>
+                        <Card sx={{ m: 2, width: 150, height: 180, backgroundColor: '#8BC34A', color: 'white' }}>
+                            <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                <Icon color='inherit' fontSize='large' >
+                                    <CheckCircleOutline fontSize='large' />
+                                </Icon>
                                 <Typography sx={{ fontSize: 40, fontWeight: 'bold', color: 'text.secondary' }}>9</Typography>
+                                <Typography variant="h5" component="div" sx={{ fontSize: 'medium' }}>Approved</Typography>
                             </CardContent>
                         </Card>
                     </Grid2>
 
-                    <Grid2 size={{ xs: 4, sm: 3 }} >
-                        <Card sx={{ m: 3,  width: 160, height: 120, backgroundColor: '#d15353', color: 'white' }}>
-                            <CardContent>
-                                <Typography variant="h5" component="div">Rejected</Typography>
+                    <Grid2 item xs={12} sm={6} md={4}>
+                        <Card sx={{ m: 2, width: 150, height: 180, backgroundColor: '#d15353', color: 'white' }}>
+                            <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                <Icon color='inherit' fontSize='large'>
+                                    <HighlightOff fontSize='large' />
+                                </Icon>
                                 <Typography sx={{ fontSize: 40, fontWeight: 'bold', color: 'text.secondary' }}>5</Typography>
+                                <Typography variant="h5" component="div" fontSize='medium'>Rejected</Typography>
                             </CardContent>
                         </Card>
                     </Grid2>
-                    <Grid2 size={{ xs: 7, sm: 3 }}>
-                        <Card sx={{ m: 3, width: 160, height: 120, backgroundColor: '#00838f', color: 'white' }}>
-                            <CardContent>
-                                <Typography variant="h5" component="div">Applied</Typography>
+
+                    <Grid2 item xs={12} sm={6} md={4}>
+                        <Card sx={{ m: 2, width: 150, height: 180, backgroundColor: '#00838f', color: 'white' }}>
+                            <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                <Icon color='inherit' fontSize='large'>
+                                    <Task fontSize='large' />
+                                </Icon>
                                 <Typography sx={{ fontSize: 40, fontWeight: 'bold', color: 'text.secondary' }}>16</Typography>
+                                <Typography variant="h5" component="div" fontSize='medium'>Applied</Typography>
                             </CardContent>
                         </Card>
                     </Grid2>
-                    <Grid2 size={{ xs: 4, sm: 3 }}>
-                        <Card sx={{ m: 3, width: 160, height: 120, backgroundColor: '#00838f', color: 'white' }}>
-                            <CardContent>
-                                <Typography variant="h5" component="div">Completed</Typography>
+
+                    <Grid2 item xs={12} sm={6} md={4}>
+                        <Card sx={{ m: 2, width: 150,  height: 180, backgroundColor: '#00838f', color: 'white' }}>
+                            <CardContent sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center' }}>
+                                <Icon color='inherit' fontSize='large'>
+                                    <Checklist fontSize='large' />
+                                </Icon>
                                 <Typography sx={{ fontSize: 40, fontWeight: 'bold', color: 'text.secondary' }}>10</Typography>
+                                <Typography variant="h5" component="div" fontSize='medium'>Completed</Typography>
                             </CardContent>
                         </Card>
                     </Grid2>
                 </Grid2>
-                <BarChart
-                xAxis={[
-                    {
-                        id:'categories',
-                        data: ['applied','rejected', 'approved','completed'],
-                        scaleType: 'band'
-                    }
-                ]}
 
-                series={[
-                    {
-                        data: [5,10,9,16]
-                    }
-                ]}
-                width={500}
-                height={400}
-                
-                />
-                
-                {/* <Bar  key={JSON.stringify(data)} data={data} options={options} /> */}
+                <Grid2 container spacing={2} justifyContent="center" marginBottom={10}>
+                    <Grid2 item xs={12} md={8}>
+                        <Card sx={{ p: 3, width: '100%' }}>
+                            <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
+                                BarChart
+                            </Typography>
+                            <BarChart
+                                xAxis={[
+                                    {
+                                        id: 'categories',
+                                        data: ['Applied', 'Rejected', 'Approved', 'Completed'],
+                                        scaleType: 'band'
+                                    }
+                                ]}
+                                series={[
+                                    {
+                                        data: [5, 10, 9, 16]
+                                    }
+                                ]}
+                                width={500}
+                                height={350}
+                            />
+                        </Card>
+                    </Grid2>
+
+                    <Grid2 item xs={12} md={8}>
+                        <Card sx={{ p: 3, width: '100%' }}>
+                            <Typography gutterBottom sx={{ color: 'text.secondary', fontSize: 14 }}>
+                                PieChart
+                            </Typography>
+                            <PieChart
+                                series={[
+                                    {
+                                        data: [
+                                            {id: 1 , label: 'Applied', value: 16},
+                                            {id: 2 ,label: 'Rejected', value: 5, },
+                                            {id: 3 ,label: 'Approved', value: 9, },
+                                            {id: 4 ,label: 'Completed', value: 10, },
+                                        ],
+                                        label: {
+                                            position: 'outside'
+                                        }
+                                    }
+                                ]}
+                                width={500}
+                                height={350}
+                            />
+                        </Card>
+                    </Grid2>
+                </Grid2>
             </Stack>
-            
         </>
     );
 }

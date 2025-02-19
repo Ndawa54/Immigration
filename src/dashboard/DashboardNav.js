@@ -6,7 +6,7 @@ import { Link } from 'react-router-dom';
 export default function DashboardNav() {
     const [open, setOpen] = useState(false);
     
-    const userRole = 'interviewer'
+    const userRole = 'approver'
     const handleClick = () => {
         setOpen(true);
     };
