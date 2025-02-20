@@ -2,26 +2,47 @@ import { Box, TextField, Button, Snackbar, Alert, Paper, Card } from '@mui/mater
 import React, { useState } from 'react';
 import logo from '../images/logo192.jpg'; // Adjust the path as necessary
 import { Link, useNavigate } from 'react-router-dom';
+import axios from 'axios';
+
 
 export default function Login() {
-  const [open, setOpen] = useState(false);
-  const [username, setUsername] = useState('');
-  const [password, setPassword] = useState('');
+  const [openError, setOpenError] = useState(false);
+  const [openSuccess, setOpenSuccess] = useState(false);
+  const [name, setName] = useState('');
+  const [height, setHeight] = useState('');
+
   const navigate = useNavigate(); // Initialize useNavigate
 
-  const handleClick = () => {
-    console.log('Username:', username);
-    console.log('Password:', password);
-    setOpen(true);
+  const handleClick = async () => {
+    try {
+      const response = await axios.get('http://127.0.0.1:8000/api/users');
+      const users = response.data;
+      
+      const foundUser = users.find(user => 
+        user.name === name && user.height === height
+      );
 
-    // Delay navigation to home page
-    setTimeout(() => {
-      navigate('/dashboard'); // Navigate to home after 4 seconds
-    }, 3000);
+      if (foundUser) {
+        setOpenSuccess(true);
+        setTimeout(() => {
+          navigate('/home');
+        }, 2000);
+      } else {
+        setOpenError(true);
+      }
+    } catch (error) {
+      console.error('Login error:', error);
+      setOpenError(true);
+    }
   };
 
-  const handleClose = () => {
-    setOpen(false);
+  const handleCloseError = () => {
+    setOpenError(false);
+  };
+
+  const handleCloseSuccess = () => {
+    setOpenSuccess(false);
+
   };
 
   return (
@@ -33,25 +54,38 @@ export default function Login() {
         <img src={logo} alt="Logo" style={{ width: '100px', marginBottom: '20px', paddingTop: '20px' }} /> {/* Logo Image */}
         <TextField
           label='Username'
-          value={username}
-          onChange={(e) => setUsername(e.target.value)}
+          value={name}
+          onChange={(e) => setName(e.target.value)}
           sx={{ mb: 2, width: 300 }}
         />
         <TextField
           label='Password'
           type='password'
-          value={password}
-          onChange={(e) => setPassword(e.target.value)}
+          value={height}
+          onChange={(e) => setHeight(e.target.value)}
           sx={{ mb: 2, width: 300 }}
         />
         <Button type='submit' variant='outlined' onClick={handleClick}>Login</Button>
         <Snackbar
-          open={open}
-          onClose={handleClose}
-          autoHideDuration={6000}
+          open={openError}
+          onClose={handleCloseError}
+          autoHideDuration={3000}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
         >
-          <Alert severity='success'>Login successfully</Alert>
+
+          <Alert severity='error'>Invalid username or password</Alert>
         </Snackbar>
+        
+        <Snackbar
+          open={openSuccess}
+          onClose={handleCloseSuccess}
+          autoHideDuration={3000}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        >
+
+          <Alert severity='success'>Login successful! Redirecting...</Alert>
+        </Snackbar>
+
         <Box sx={{ display: 'flex', direction: 'row',pb: 3 }}>
           <Link to='/register' underline='none' sx={{ mt: 2, cursor: 'pointer' }}>
             Don't have an account? Register here.

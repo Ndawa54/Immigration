@@ -22,7 +22,7 @@ export default function Navigation() {
                     }}> </Typography>
 
                     <Stack direction="row" spacing={2}>
-                        <Button color='inherit'>Home</Button>
+                        <Button color='inherit' component={Link} to='/home'>Home</Button>
                         <Button color='inherit'>Track</Button>
                         <Button color='inherit'>Contacts</Button>
                     </Stack>

@@ -1,6 +1,6 @@
 import React, { useState } from 'react'
 import Navigation from './Navigation'
-import { Box, Tab, Tabs, TextField, Button, MenuItem, FormControl, InputLabel, OutlinedInput, InputAdornment } from '@mui/material'
+import { Box, Tab, Tabs, TextField, Button, MenuItem, FormControl, InputLabel, OutlinedInput, InputAdornment, Card } from '@mui/material'
 
 export default function Home() {
   const [applicationConsent, setApplicationConsent] = useState('pending');
@@ -26,12 +26,13 @@ export default function Home() {
         {/* Show the form only in the Application Consent tab */}
         {activeTab === 0 && (
           <div>
-            <Box sx={{display: 'flex', flexDirection: 'column', alignItems: 'center', p: 2, mt: 4,}}>
+            <Box sx={{ p: 3, display: 'flex' , justifyContent: 'center' }}>
+            <Card sx={{display: 'flex', flexDirection: 'column', alignItems: 'center',m: 4,width: '90%', }}>
             <TextField 
               label="Name" 
               value={name} 
               onChange={(e) => setName(e.target.value)} 
-              sx={{mb: 2, width: '30ch'}}
+              sx={{mt:5,mb: 2, width: '30ch'}}
             />
             <TextField 
               label="Email" 
@@ -39,7 +40,14 @@ export default function Home() {
               onChange={(e) => setEmail(e.target.value)} 
               sx={{mb: 2,width: '30ch'}}
             />
-            <Button onClick={() => setApplicationConsent('approved')} variant='outlined'>Submit</Button>
+            <Button 
+            onClick={() => setApplicationConsent('approved')} 
+            variant='outlined'
+            sx={{mb: 2}}
+            >
+              Submit
+            </Button>
+            </Card>
             </Box>
             
           </div>
