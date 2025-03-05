@@ -1,4 +1,4 @@
-import { Box, TextField, Button, Snackbar, Alert, Paper, Card } from '@mui/material';
+import { Box, TextField, Button, Snackbar, Alert, Paper} from '@mui/material';
 import React, { useState } from 'react';
 import logo from '../images/logo192.jpg'; // Adjust the path as necessary
 import { Link, useNavigate } from 'react-router-dom';
@@ -9,7 +9,7 @@ export default function Login() {
   const [openError, setOpenError] = useState(false);
   const [openSuccess, setOpenSuccess] = useState(false);
   const [name, setName] = useState('');
-  const [height, setHeight] = useState('');
+  const [password, setPassword] = useState('');
 
   const navigate = useNavigate(); // Initialize useNavigate
 
@@ -19,13 +19,15 @@ export default function Login() {
       const users = response.data;
       
       const foundUser = users.find(user => 
-        user.name === name && user.height === height
+        user.name === name && user.password === password
       );
 
       if (foundUser) {
+        console.log(foundUser)
         setOpenSuccess(true);
         setTimeout(() => {
-          navigate('/home');
+          navigate('/dashboard', { state: { userId: foundUser.id } });
+
         }, 2000);
       } else {
         setOpenError(true);
@@ -61,8 +63,8 @@ export default function Login() {
         <TextField
           label='Password'
           type='password'
-          value={height}
-          onChange={(e) => setHeight(e.target.value)}
+          value={password}
+          onChange={(e) => setPassword(e.target.value)}
           sx={{ mb: 2, width: 300 }}
         />
         <Button type='submit' variant='outlined' onClick={handleClick}>Login</Button>

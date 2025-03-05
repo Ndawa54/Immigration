@@ -32,7 +32,7 @@ export default function Navigation() {
                     <Typography variant="h6" component="div" sx={{ fontSize: 15, mt: 2, ml: 2 }} > Menu </Typography>
                     <List sx={{ spacing: '2', width: '30ch', display: 'block', role: 'presentation' }}>
                         <ListItem>
-                            <ListItemButton component={Link} to='/profile'>
+                            <ListItemButton component={Link} to='/profile' state={{ user: { name: "Emmanuel", email: "johndoe53@gmail.com", phone: "+265 993 635 965", address: "Blantyre, Chileka", nationality: "Malawian" } }}>
                                 <ListItemIcon color='inherit'><Person /></ListItemIcon>
                                 <ListItemText>Profile</ListItemText>
                             </ListItemButton>
@@ -43,7 +43,6 @@ export default function Navigation() {
                                 <ListItemText>Logout</ListItemText>
                             </ListItemButton>
                         </ListItem>
-
                     </List>
                 </Drawer>
             </AppBar>

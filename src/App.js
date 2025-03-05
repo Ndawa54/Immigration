@@ -1,16 +1,16 @@
-import logo from './logo.svg';
+
 import './App.css';
 import Login from './components/Login';
-import Navigation from './components/Navigation';
-import Register from './components/Register';
+import { UserProvider } from './context/UserContext'; // Import UserProvider
 
 function App() {
+
   return (
-    <div className="App">
-      {/* <Navigation/> */}
-      <Login/>
-      {/* <Register/> */}
-    </div>
+    <UserProvider> {/* Wrap the application with UserProvider */}
+      <div className="App">
+        <Login /> 
+      </div>
+    </UserProvider>
   );
 }
 

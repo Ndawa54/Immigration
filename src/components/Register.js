@@ -1,6 +1,6 @@
-import { Box, Button, FormControl, InputAdornment, InputLabel, OutlinedInput, Paper, TextField } from '@mui/material'
+import { Alert, Box, Button, FormControl, InputAdornment, InputLabel, OutlinedInput, Paper, Snackbar, TextField } from '@mui/material'
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { useNavigate } from 'react-router-dom'
 import axios from 'axios'
 
 export default function Register() {
@@ -17,10 +17,19 @@ export default function Register() {
     const [password, setPassword] = useState('')
     const [loading, setLoading] = useState(false)
     const [error, setError] = useState(null)
+    const [openSuccess, setOpenSuccess] = useState(false)
+    const navigate = useNavigate();
 
+    const handleCloseSuccess = () =>{
+        setOpenSuccess(false)
+    }    
     const handleClick = async () => {
         setLoading(true)
         setError(null)
+        setOpenSuccess(true)
+        setTimeout(() => {
+            navigate('/')
+        }, 3000);
         
         try {
             const response = await axios.post('http://127.0.0.1:8000/api/users', {
@@ -159,6 +168,16 @@ export default function Register() {
                         sx={{mb:4}}>
                         {loading ? 'Registering...' : 'Register'}
                     </Button>
+
+                    <Snackbar
+                              open={openSuccess}
+                              onClose={handleCloseSuccess}
+                              autoHideDuration={3000}
+                              anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+                            >
+                    
+                              <Alert severity='success'>Registered successful! Redirecting...</Alert>
+                            </Snackbar>
                 </Box>
             </Paper>
         </div>

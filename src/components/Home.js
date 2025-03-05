@@ -1,20 +1,28 @@
 import React, { useState } from 'react'
+import { useLocation } from 'react-router-dom';
 import Navigation from './Navigation'
 import { Box, Tab, Tabs, TextField, Button, MenuItem, FormControl, InputLabel, OutlinedInput, InputAdornment, Card } from '@mui/material'
 
 export default function Home() {
+  const location = useLocation(); // Retrieve location state
+  const userId = location.state?.userId; // Get user ID from state
   const [applicationConsent, setApplicationConsent] = useState('pending');
+
   const [interviewApproval, setInterviewApproval] = useState('pending');
-  const [name, setName] = useState('');
-  const [email, setEmail] = useState('');
+  const [country, setCountry] = useState('');
+  const [reason, setReason] = useState('');
   const [activeTab, setActiveTab] = useState(0); // Track the active tab
   const [value , setValue] = useState('')
-   console.log(value)
+  const [description, setDescription] = useState('')
+   console.log(value,country,reason,description)
+  
+   
 
 
   return (
     <div>
-      <Navigation/>
+      <Navigation userId={userId} /> {/* Pass userId to Navigation if needed */}
+      {console.log(userId)}
       <Box>
         <Tabs value={activeTab} onChange={(e, newValue) => setActiveTab(newValue)}>
           <Tab label="Application Consent" />
@@ -29,17 +37,40 @@ export default function Home() {
             <Box sx={{ p: 3, display: 'flex' , justifyContent: 'center' }}>
             <Card sx={{display: 'flex', flexDirection: 'column', alignItems: 'center',m: 4,width: '90%', }}>
             <TextField 
-              label="Name" 
-              value={name} 
-              onChange={(e) => setName(e.target.value)} 
+              label="Select Country" 
+              value={country} 
+              onChange={(e) => setCountry(e.target.value)} 
               sx={{mt:5,mb: 2, width: '30ch'}}
-            />
+              select
+              fullWidth
+            >
+              <MenuItem value='ZA'>Zambia</MenuItem>
+              <MenuItem value='TZ'>Tanzania</MenuItem>
+              <MenuItem value='ZM'>Zimbabwe</MenuItem>
+              <MenuItem value='MZ'>Mozambique</MenuItem>
+            </TextField>
             <TextField 
-              label="Email" 
-              value={email} 
-              onChange={(e) => setEmail(e.target.value)} 
+              label="Reason" 
+              value={reason} 
+              onChange={(e) => setReason(e.target.value)} 
               sx={{mb: 2,width: '30ch'}}
-            />
+              select
+              fullWidth
+          >
+              <MenuItem value='Meeting'>Attend a Meeting</MenuItem>
+              <MenuItem value='Medical'>Seek Medical Help</MenuItem>
+              <MenuItem value='School'>School Work</MenuItem>
+              
+          </TextField>
+          <TextField
+          label='Detailed Description'
+          value={description}
+          onChange={(e) => setDescription(e.target.value)}
+          sx={{mb: 2,width: '30ch'}}
+          multiline
+          rows={4}
+          />
+
             <Button 
             onClick={() => setApplicationConsent('approved')} 
             variant='outlined'
