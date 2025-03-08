@@ -1,15 +1,22 @@
 import { Logout, Menu, Person } from '@mui/icons-material'
 import { AppBar, Button, Drawer, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Stack, Toolbar, Typography } from '@mui/material'
 import React, { useState } from 'react'
-import { Link } from 'react-router-dom'
+import { Link, useNavigate } from 'react-router-dom'
 
 
 export default function Navigation() {
     const [open, setOpen] = useState(false)
+    const navigate = useNavigate()
 
     const handleClick = () => {
         setOpen(true)
     }
+
+    const handleLogout = () => {
+        localStorage.removeItem('userId');
+        localStorage.removeItem('role');
+        navigate('/');
+      };
     return (
         <div>
             <AppBar position='static'>
@@ -38,7 +45,7 @@ export default function Navigation() {
                             </ListItemButton>
                         </ListItem>
                         <ListItem>
-                            <ListItemButton component={Link} to='/'>
+                            <ListItemButton onClick={handleLogout}>
                                 <ListItemIcon color='inherit'><Logout /></ListItemIcon>
                                 <ListItemText>Logout</ListItemText>
                             </ListItemButton>

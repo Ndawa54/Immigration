@@ -4,7 +4,6 @@ import logo from '../images/logo192.jpg'; // Adjust the path as necessary
 import { Link, useNavigate } from 'react-router-dom';
 import axios from 'axios';
 
-
 export default function Login() {
   const [openError, setOpenError] = useState(false);
   const [openSuccess, setOpenSuccess] = useState(false);
@@ -25,8 +24,18 @@ export default function Login() {
       if (foundUser) {
         console.log(foundUser)
         setOpenSuccess(true);
-        setTimeout(() => {
-          navigate('/dashboard', { state: { userId: foundUser.id } });
+
+        localStorage.setItem('userId', foundUser.id);
+        localStorage.setItem('role', foundUser.role);
+
+        setTimeout(() => { 
+          if (foundUser.role.toLowerCase() === 'applicant') {
+            navigate('/home', { state: { userId: foundUser.role } });
+          } else if (['verifier', 'interviewer', 'approver'].includes(foundUser.role.toLowerCase())) {
+            navigate('/dashboard', { state: { userId: foundUser.role } });
+          } else {
+            setOpenError(true); // Show error for unauthorized roles
+          }
 
         }, 2000);
       } else {
@@ -44,16 +53,14 @@ export default function Login() {
 
   const handleCloseSuccess = () => {
     setOpenSuccess(false);
-
   };
 
   return (
     <div className='login'>
       <Paper elevation={5} sx={{m:4}}>
-      {/* <Card sx={{width: '50%', display: 'flex', flexDirection: 'row', ml:40,mt: 5}}> */}
       <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', mt: 15,mb: 2 }}>
        
-        <img src={logo} alt="Logo" style={{ width: '100px', marginBottom: '20px', paddingTop: '20px' }} /> {/* Logo Image */}
+        <img src={logo} alt="Logo" style={{ width: '100px', marginBottom: '20px', paddingTop: '20px' }} />
         <TextField
           label='Username'
           value={name}
@@ -84,6 +91,7 @@ export default function Login() {
           autoHideDuration={3000}
           anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
         >
+
 
           <Alert severity='success'>Login successful! Redirecting...</Alert>
         </Snackbar>

@@ -4,8 +4,7 @@ import Navigation from './Navigation'
 import { Box, Tab, Tabs, TextField, Button, MenuItem, FormControl, InputLabel, OutlinedInput, InputAdornment, Card } from '@mui/material'
 
 export default function Home() {
-  const location = useLocation(); // Retrieve location state
-  const userId = location.state?.userId; // Get user ID from state
+  const location = useLocation(); // Retrieve location state // Get user ID from state
   const [applicationConsent, setApplicationConsent] = useState('pending');
 
   const [interviewApproval, setInterviewApproval] = useState('pending');
@@ -15,14 +14,16 @@ export default function Home() {
   const [value , setValue] = useState('')
   const [description, setDescription] = useState('')
    console.log(value,country,reason,description)
-  
+   const userId = Number(localStorage.getItem('userId'));
+   const role = localStorage.getItem('role');
    
-
+   console.log("User ID:", userId);
+   console.log("Role:", role);
 
   return (
     <div>
-      <Navigation userId={userId} /> {/* Pass userId to Navigation if needed */}
-      {console.log(userId)}
+      <Navigation  /> {/* Pass userId to Navigation if needed */}
+    
       <Box>
         <Tabs value={activeTab} onChange={(e, newValue) => setActiveTab(newValue)}>
           <Tab label="Application Consent" />

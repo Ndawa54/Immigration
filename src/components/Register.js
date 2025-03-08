@@ -42,7 +42,7 @@ export default function Register() {
                 district,
                 height,
                 ta,
-                role,
+                role : 'Applicant',
                 password
             })
             console.log('Registration successful:', response.data)
@@ -133,11 +133,7 @@ export default function Register() {
                     value={ta}
                     onChange={(e) => setTa(e.target.value)}
                     sx={{ mb: 2, width: '50ch' }} />
-                    <TextField 
-                    label='Role'
-                    value={role}
-                    onChange={(e) => setRole(e.target.value)}
-                    sx={{ mb: 2, width: '50ch' }} />
+                    
                     <FormControl variant='outlined' sx={{ mb: 2, width: '50ch' }}>
                         <InputLabel>Height</InputLabel>
                         <OutlinedInput

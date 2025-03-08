@@ -1,15 +1,16 @@
 import {  AnalyticsOutlined, Approval, Dashboard, Logout, Menu, Person, Person2, Verified } from '@mui/icons-material';
 import { AppBar, Divider, Drawer, IconButton, List, ListItem, ListItemButton, ListItemIcon, ListItemText, Stack, Toolbar, Typography } from '@mui/material';
 import React, { useState } from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useLocation } from 'react-router-dom';
 
 export default function DashboardNav() {
-    const [open, setOpen] = useState(false);
-    
-    const userRole = 'approver'
+    const [open, setOpen] = useState(false);    
+    const userRole = localStorage.getItem('role')
     const handleClick = () => {
         setOpen(true);
     };
+
+    console.log(userRole)
 
     return (
         <div>

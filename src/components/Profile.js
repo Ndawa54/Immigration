@@ -1,16 +1,14 @@
 import { Call, Email, Flag, LocationCity, Map } from '@mui/icons-material';
 import { Box, List, ListItem, ListItemIcon, ListItemText, Paper, Stack } from '@mui/material';
 import React, { useEffect, useState } from 'react';
-import { useLocation } from 'react-router-dom';
-
 import logo from '../images/user.png';
 import Navigation from './Navigation';
 
 export default function Profile() {
-    const location = useLocation();
     const [userDetails, setUserDetails] = useState({});
-    const userId = 1; // Hardcoded user ID for testing
-
+    const userId = Number(localStorage.getItem('userId'));
+    // Hardcoded user ID for testing
+     console.log(userId)   
     useEffect(() => {
         const fetchUserDetails = async () => {
             try {

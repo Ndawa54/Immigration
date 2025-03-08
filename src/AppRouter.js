@@ -7,6 +7,7 @@ import Example from "./components/test/Example";
 import Dashboard from "./dashboard/Dashboard";
 import Analytics from "./dashboard/Analytics";
 import Approver from "./dashboard/Approver";
+import DashboardNav from "./dashboard/DashboardNav";
 
 const AppRouter = createBrowserRouter([
 {
@@ -41,6 +42,10 @@ const AppRouter = createBrowserRouter([
   {
     path: '/approve',
     element: <Approver/>
+  },
+  {
+    path: 'dash',
+    element: <DashboardNav/>
   }
 ])
 
