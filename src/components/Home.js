@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import Navigation from './Navigation';
-import { Box, Tab, Tabs, TextField, Button, MenuItem, FormControl, InputLabel, OutlinedInput, InputAdornment, Card } from '@mui/material';
+import { Box, Tab, Tabs, TextField, Button, MenuItem, FormControl, InputLabel, OutlinedInput, InputAdornment, Card, Snackbar, Alert } from '@mui/material';
 import axios from 'axios';
 
 export default function Home() {
@@ -12,6 +12,11 @@ export default function Home() {
   const [description, setDescription] = useState('');
   const [error, setError] = useState(null);
   const [loading, setLoading] = useState(false);
+  const [open, setOpen] = useState(false);
+  const [errorMessage, setErrorMessage] = useState('');
+  const [errorOpen, setErrorOpen] = useState(false);
+  const [passportFile, setPassportFile] = useState(null);
+  const [documentFile, setDocumentFile] = useState(null);
 
   const userId = Number(localStorage.getItem('userId'));
   const role = localStorage.getItem('role');
@@ -19,6 +24,17 @@ export default function Home() {
   console.log("User ID:", userId);
   console.log("Role:", role);
 
+  const handleClose = () => {
+    setOpen(false)
+  }
+
+  const handlePassportChange = (e) => {
+    setPassportFile(e.target.files[0]);
+  };
+
+  const handleDocumentChange = (e) => {
+    setDocumentFile(e.target.files[0]);
+  };
   // Function to fetch details and update interviewApproval
   const fetchDetails = async () => {
     try {
@@ -50,8 +66,15 @@ export default function Home() {
   },);
 
   const handleClick = async () => {
+    if (!country || !reason || !description) {
+      setErrorMessage('Please fill in all required fields.');
+      setErrorOpen(true);
+      return;
+    }
+
     setError(null);
     setLoading(true);
+    setOpen(true);
 
     try {
       await axios.post('http://127.0.0.1:8000/api/details', {
@@ -104,6 +127,7 @@ export default function Home() {
                 <MenuItem value='ZM'>Zimbabwe</MenuItem>
                 <MenuItem value='MZ'>Mozambique</MenuItem>
               </TextField>
+              
               <TextField
                 label="Reason"
                 value={reason}
@@ -116,6 +140,7 @@ export default function Home() {
                 <MenuItem value='Medical'>Seek Medical Help</MenuItem>
                 <MenuItem value='School'>School Work</MenuItem>
               </TextField>
+
               <TextField
                 label='Detailed Description'
                 value={description}
@@ -124,6 +149,38 @@ export default function Home() {
                 multiline
                 rows={4}
               />
+
+              {/* Upload Passport Photo */}
+              <Button
+                variant="contained"
+                component="label"
+                sx={{ mb: 2 }}
+              >
+                Upload Passport Photo
+                <input
+                  type="file"
+                  hidden
+                  accept="image/*"
+                  onChange={handlePassportChange}
+                />
+              </Button>
+              {passportFile && <p>{passportFile.name}</p>}
+
+              {/* Upload Supporting Document */}
+              <Button
+                variant="contained"
+                component="label"
+                sx={{ mb: 2 }}
+              >
+                Upload Document
+                <input
+                  type="file"
+                  hidden
+                  accept=".pdf,.doc,.docx,.png,.jpg"
+                  onChange={handleDocumentChange}
+                />
+              </Button>
+              {documentFile && <p>{documentFile.name}</p>}
               <Button
                 onClick={handleClick}
                 variant='outlined'
@@ -132,6 +189,26 @@ export default function Home() {
                 Submit
               </Button>
             </Card>
+
+            {/* Success Snackbar */}
+            <Snackbar
+              open={open}
+              autoHideDuration={6000}
+              onClose={handleClose}
+              anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            >
+              <Alert severity='success'>Details have been uploaded successfully!....</Alert>
+            </Snackbar>
+
+            {/* Error SnackBar */}
+            <Snackbar
+              open={errorOpen}
+              autoHideDuration={6000}
+              onClose={() => setErrorOpen(false)}
+              anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+            >
+              <Alert severity='warning'>{errorMessage}</Alert>
+            </Snackbar>
           </Box>
         )}
         {activeTab === 1 && interviewApproval === 'approve' && (

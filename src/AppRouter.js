@@ -8,6 +8,7 @@ import Dashboard from "./dashboard/Dashboard";
 import Analytics from "./dashboard/Analytics";
 import Approver from "./dashboard/Approver";
 import DashboardNav from "./dashboard/DashboardNav";
+import Track from "./components/Track";
 
 const AppRouter = createBrowserRouter([
 {
@@ -46,6 +47,10 @@ const AppRouter = createBrowserRouter([
   {
     path: 'dash',
     element: <DashboardNav/>
+  },
+  {
+    path: 'track',
+    element: <Track/>
   }
 ])
 

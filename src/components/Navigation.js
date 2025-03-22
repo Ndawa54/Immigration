@@ -19,6 +19,7 @@ export default function Navigation() {
       };
     return (
         <div>
+
             <AppBar position='static'>
                 <Toolbar sx={{backgroundColor:'#40b8ea', padding:1,}} >
                     <IconButton color='inherit' onClick={handleClick}>
@@ -30,7 +31,7 @@ export default function Navigation() {
 
                     <Stack direction="row" spacing={2}>
                         <Button color='inherit' component={Link} to='/home'>Home</Button>
-                        <Button color='inherit'>Track</Button>
+                        <Button color='inherit' component={Link} to='/track'>Track</Button>
                         <Button color='inherit'>Contacts</Button>
                     </Stack>
 
