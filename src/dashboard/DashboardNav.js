@@ -38,7 +38,7 @@ export default function DashboardNav() {
                                     </ListItemButton>
                                 </ListItem>
                                 <ListItem>
-                                    <ListItemButton component={Link} to=''>
+                                    <ListItemButton component={Link} to='/interview'>
                                         <ListItemIcon color='inherit'><Person2 /></ListItemIcon>
                                         <ListItemText>Interview</ListItemText>
                                     </ListItemButton>

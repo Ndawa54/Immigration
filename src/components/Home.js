@@ -82,7 +82,9 @@ export default function Home() {
         destination: country,
         reason: reason,
         description: description,
-        status: 'pending'
+        status: 'pending',
+        interview_date: '-',
+        interview_status: '-'
       });
 
       console.log('Details sent successfully');

@@ -9,6 +9,7 @@ import Analytics from "./dashboard/Analytics";
 import Approver from "./dashboard/Approver";
 import DashboardNav from "./dashboard/DashboardNav";
 import Track from "./components/Track";
+import Interview from "./dashboard/Interview";
 
 const AppRouter = createBrowserRouter([
 {
@@ -51,6 +52,10 @@ const AppRouter = createBrowserRouter([
   {
     path: 'track',
     element: <Track/>
+  },
+  {
+    path: 'interview',
+    element: <Interview/>
   }
 ])
 
