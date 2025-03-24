@@ -1,21 +1,23 @@
 import { useState, useEffect } from "react";
 import { Stepper, Step, StepLabel, Typography, Button, Card, CardContent } from "@mui/material";
-import { CheckCircle, HourglassEmpty, Close } from "@mui/icons-material";
+import { CheckCircle, HourglassEmpty, Close, Verified } from "@mui/icons-material";
 import Navigation from './Navigation';
 
 const steps = ["Submitted", "Verified", "Interviewed", "Approved"];
 
 const statusIcons = {
-  completed: <CheckCircle color="success" />, 
-  pending: <HourglassEmpty color="warning" />, 
+  completed: <CheckCircle color="success" />,
+  pending: <HourglassEmpty color="warning" />,
   rejected: <Close color="error" />
 };
 
 const statusMessages = {
   pending: "Your documents are being reviewed. Please wait for verification.",
-  approve: "Your application has been verified successfully.",
+  verified: "Your application has been verified successfully.",
   rejected: "Unfortunately, your application was rejected. Please review the reason and resubmit.",
-  submitted: "Your application has been submitted and is awaiting processing."
+  submitted: "Your application has been submitted and is awaiting processing.",
+  scheduled: "Interviews have been scheduled for you, Please check the dates for interviews.",
+  interviewed: "Successfully succeeded in the Interviews, Pending payment..."
 };
 
 const userId = localStorage.getItem('userId');
@@ -25,7 +27,7 @@ export default function Track() {
   const [currentStatus, setCurrentStatus] = useState("Loading...");
   const [rejectionMessage, setRejectionMessage] = useState("");
   const [lastUpdated, setLastUpdated] = useState("N/A");
-  
+
   useEffect(() => {
     fetch("http://127.0.0.1:8000/api/details")
       .then(response => response.json())
@@ -36,11 +38,19 @@ export default function Track() {
           switch (userDetails.status) {
             case "pending":
               setActiveStep(1);
-              setCurrentStatus("Pending Verification");
+              setCurrentStatus("Pending");
               break;
             case "approve":
               setActiveStep(2);
               setCurrentStatus("Verified");
+              break;
+            case "scheduled":
+              setActiveStep(2);
+              setCurrentStatus("Scheduled");
+              break;
+            case "approved":
+              setActiveStep(3);
+              setCurrentStatus("Interviewed");
               break;
             case "reject":
               setActiveStep(1);
@@ -70,12 +80,12 @@ export default function Track() {
             </Step>
           ))}
         </Stepper>
-        
+
         <Card variant="outlined" style={{ marginTop: 20 }}>
           <CardContent>
             <Typography variant="h6">Current Status:</Typography>
             <Typography variant="body1" gutterBottom>
-              {statusIcons[currentStatus === "Verified" ? "completed" : currentStatus === "Rejected" ? "rejected" : "pending"]} {currentStatus}
+              {statusIcons[currentStatus === "Verified" || currentStatus === "Interviewed" ? "completed" : currentStatus === "Rejected" ? "rejected" : "pending"]} {currentStatus}
             </Typography>
             <Typography variant="body2">{statusMessages[currentStatus.toLowerCase()]}</Typography>
             {currentStatus === "Rejected" && (
@@ -86,7 +96,7 @@ export default function Track() {
             </Typography>
           </CardContent>
         </Card>
-        
+
         {currentStatus === "Rejected" && (
           <Button variant="contained" color="secondary" fullWidth style={{ marginTop: 10 }}>
             Re-Submit

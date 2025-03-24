@@ -1,4 +1,4 @@
-import { Card, CardContent, Grid2, Icon, Stack, Typography } from '@mui/material';
+import { Card, CardContent, CircularProgress, Grid2, Icon, Stack, Typography } from '@mui/material';
 import React, { useEffect, useState } from 'react';
 import DashboardNav from './DashboardNav';
 import { BarChart, PieChart } from '@mui/x-charts';
@@ -12,6 +12,7 @@ export default function Analytics() {
         pending: 0,
         rejected: 0
     })
+    const [loading, setLoading] = useState(true)
 
     useEffect(() => {
         const fetchData = async () => {
@@ -30,13 +31,15 @@ export default function Analytics() {
                 setData(statusCount)
             }catch(error){
                 console.log('Failed to load details:', error)
+            }finally{
+                setLoading(false)
             }
             
          }
         fetchData()
     }, [])
     
- 
+  if (loading) return <Stack spacing={2} direction="column" alignItems="center" marginTop={34}> <CircularProgress size="3rem" /> </Stack>;
     return (
         <>
             <DashboardNav />

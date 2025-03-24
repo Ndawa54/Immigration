@@ -1,7 +1,7 @@
 import { Label } from "@mui/icons-material";
 import { 
-  Box, Button, Card, CardContent, Dialog, DialogActions, DialogContent, DialogTitle, 
-  Input, Paper, Table, TableBody, TableCell, TableContainer, TableHead, TableRow 
+  Box, Button, Card, CardContent, CircularProgress, Dialog, DialogActions, DialogContent, DialogTitle, 
+  Input, Paper, Stack, Table, TableBody, TableCell, TableContainer, TableHead, TableRow 
 } from "@mui/material";
 import React, { useState, useEffect } from "react";
 import DashboardNav from "./DashboardNav";
@@ -12,6 +12,7 @@ export default function Interview() {
   const [open, setOpen] = useState(false);
   const [selectedApplicant, setSelectedApplicant] = useState(null);
   const [date, setDate] = useState("");
+  const [loading, setLoading] = useState(true)
 
   useEffect(() => {
     // Fetch data from two APIs
@@ -35,6 +36,8 @@ export default function Interview() {
         setApplicants(mergedData);
       } catch (error) {
         console.error("Error fetching data:", error);
+      }finally{
+        setLoading(false)
       }
     };
 
@@ -50,6 +53,8 @@ export default function Interview() {
     console.log(`Scheduled ${selectedApplicant.name} on ${date}`);
     setOpen(false);
   };
+
+   if (loading) return <Stack spacing={2} direction="column" alignItems="center" marginTop={34}> <CircularProgress size="3rem" /> </Stack>;
 
   return (
     <>
@@ -78,11 +83,11 @@ export default function Interview() {
                   </TableHead>
                   <TableBody>
                     {applicants
-                    .filter(applicant => applicant.status === 'approve')
+                    .filter(applicant => applicant.status ==='approve' || applicant.status === 'scheduled')
                     .map((applicant) => (
                       <TableRow key={applicant.id}>
                         <TableCell>{applicant.name}</TableCell>
-                        <TableCell>Approved</TableCell>
+                        <TableCell>{applicant.status}</TableCell>
                         <TableCell>{applicant.interviewDate}</TableCell>
                         <TableCell>
                           {applicant.status === "approve" && (
@@ -90,7 +95,7 @@ export default function Interview() {
                           )}
                         </TableCell>
                         <TableCell>
-                            {applicant.interviewStatus === 'scheduled' && (
+                            {applicant.status === 'scheduled' && (
                                 <Button>Approve</Button>
                             )}
                         </TableCell>
