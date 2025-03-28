@@ -1,4 +1,4 @@
-import { Box, TextField, Button, Snackbar, Alert, Paper} from '@mui/material';
+import { Box, TextField, Button, Snackbar, Alert, Paper, Typography } from '@mui/material';
 import React, { useState } from 'react';
 import logo from '../images/logo192.jpg'; // Adjust the path as necessary
 import { Link, useNavigate } from 'react-router-dom';
@@ -10,7 +10,7 @@ export default function Login() {
   const [name, setName] = useState('');
   const [password, setPassword] = useState('');
 
-  const navigate = useNavigate(); // Initialize useNavigate
+  const navigate = useNavigate();
 
   const handleClick = async () => {
     try {
@@ -22,7 +22,6 @@ export default function Login() {
       );
 
       if (foundUser) {
-        console.log(foundUser)
         setOpenSuccess(true);
 
         localStorage.setItem('userId', foundUser.id);
@@ -34,9 +33,8 @@ export default function Login() {
           } else if (['verifier', 'interviewer', 'approver'].includes(foundUser.role.toLowerCase())) {
             navigate('/dashboard', { state: { userId: foundUser.role } });
           } else {
-            setOpenError(true); // Show error for unauthorized roles
+            setOpenError(true);
           }
-
         }, 2000);
       } else {
         setOpenError(true);
@@ -47,64 +45,74 @@ export default function Login() {
     }
   };
 
-  const handleCloseError = () => {
-    setOpenError(false);
-  };
-
-  const handleCloseSuccess = () => {
-    setOpenSuccess(false);
-  };
+  const handleCloseError = () => setOpenError(false);
+  const handleCloseSuccess = () => setOpenSuccess(false);
 
   return (
-    <div className='login'>
-      <Paper elevation={5} sx={{m:4}}>
-      <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', mt: 15,mb: 2 }}>
-       
-        <img src={logo} alt="Logo" style={{ width: '100px', marginBottom: '20px', paddingTop: '20px' }} />
+    <Box 
+      sx={{
+        display: 'flex',
+        alignItems: 'center',
+        justifyContent: 'center',
+        height: '100vh',
+        backgroundColor: '#f4f4f4'
+      }}
+    >
+      <Paper elevation={6} sx={{ p: 4, width: 360, textAlign: 'center', borderRadius: 3 }}>
+        <img src={logo} alt="Logo" style={{ width: 80, marginBottom: 16 }} />
+        
+        <Typography variant="h5" sx={{ fontWeight: 'bold', mb: 2 }}>
+          Welcome Back
+        </Typography>
+
         <TextField
-          label='Username'
+          label="Username"
+          variant="outlined"
           value={name}
           onChange={(e) => setName(e.target.value)}
-          sx={{ mb: 2, width: 300 }}
+          fullWidth
+          sx={{ mb: 2 }}
         />
         <TextField
-          label='Password'
-          type='password'
+          label="Password"
+          type="password"
+          variant="outlined"
           value={password}
           onChange={(e) => setPassword(e.target.value)}
-          sx={{ mb: 2, width: 300 }}
+          fullWidth
+          sx={{ mb: 3 }}
         />
-        <Button type='submit' variant='outlined' onClick={handleClick}>Login</Button>
-        <Snackbar
-          open={openError}
-          onClose={handleCloseError}
-          autoHideDuration={3000}
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-        >
-
-          <Alert severity='error'>Invalid username or password</Alert>
-        </Snackbar>
         
-        <Snackbar
-          open={openSuccess}
-          onClose={handleCloseSuccess}
-          autoHideDuration={3000}
-          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+        <Button 
+          variant="contained" 
+          fullWidth 
+          sx={{ 
+            py: 1.2, 
+            backgroundColor: '#1976d2', 
+            '&:hover': { backgroundColor: '#1565c0' } 
+          }}
+          onClick={handleClick}
         >
+          Login
+        </Button>
 
-
-          <Alert severity='success'>Login successful! Redirecting...</Alert>
-        </Snackbar>
-
-        <Box sx={{ display: 'flex', direction: 'row',pb: 3 }}>
-          <Link to='/register' underline='none' sx={{ mt: 2, cursor: 'pointer' }}>
-            Don't have an account? Register here.
+        <Typography variant="body2" sx={{ mt: 2 }}>
+          Don't have an account?{' '}
+          <Link to="/register" style={{ textDecoration: 'none', color: '#1976d2' }}>
+            Register here
           </Link>
-        </Box>
-        
-      </Box>
-      {/* </Card> */}
+        </Typography>
+
+        {/* Error Snackbar */}
+        <Snackbar open={openError} onClose={handleCloseError} autoHideDuration={3000} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
+          <Alert severity="error">Invalid username or password</Alert>
+        </Snackbar>
+
+        {/* Success Snackbar */}
+        <Snackbar open={openSuccess} onClose={handleCloseSuccess} autoHideDuration={3000} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
+          <Alert severity="success">Login successful! Redirecting...</Alert>
+        </Snackbar>
       </Paper>
-    </div>
+    </Box>
   );
 }
