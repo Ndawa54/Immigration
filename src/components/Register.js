@@ -1,181 +1,107 @@
-import { Alert, Box, Button, FormControl, InputAdornment, InputLabel, OutlinedInput, Paper, Snackbar, TextField } from '@mui/material'
-import React, { useState } from 'react'
-import { useNavigate } from 'react-router-dom'
-import axios from 'axios'
+import { 
+    Alert, Box, Button, FormControl, InputAdornment, InputLabel, 
+    OutlinedInput, Paper, Snackbar, TextField, Typography 
+} from '@mui/material';
+import React, { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import axios from 'axios';
 
 export default function Register() {
-    const [name, setName] = useState('')
-    const [address, setAddress] = useState('')
-    const [dob, setDob] = useState('')
-    const [phone, setPhone] = useState('')
-    const [email, setEmail] = useState('')
-    const [country, setCountry] = useState('')
-    const [district, setDistrict] = useState('')
-    const [height, setHeight] = useState('')
-    const [ta, setTa] = useState('')
-    const [role, setRole] = useState('')
-    const [password, setPassword] = useState('')
-    const [loading, setLoading] = useState(false)
-    const [error, setError] = useState(null)
-    const [openSuccess, setOpenSuccess] = useState(false)
+    const [formData, setFormData] = useState({
+        name: '', address: '', dob: '', phone: '', email: '',
+        country: '', district: '', height: '', ta: '', password: '', confirmPassword: ''
+    });
+
+    const [loading, setLoading] = useState(false);
+    const [error, setError] = useState(null);
+    const [openSuccess, setOpenSuccess] = useState(false);
     const navigate = useNavigate();
 
-    const handleCloseSuccess = () =>{
-        setOpenSuccess(false)
-    }    
-    const handleClick = async () => {
-        setLoading(true)
-        setError(null)
-        setOpenSuccess(true)
-        setTimeout(() => {
-            navigate('/')
-        }, 3000);
-        
-        try {
-            const response = await axios.post('http://127.0.0.1:8000/api/users', {
-                name,
-                address,
-                dob,
-                phone,
-                email,
-                country,
-                district,
-                height,
-                ta,
-                role : 'Applicant',
-                password
-            })
-            console.log('Registration successful:', response.data)
-            // Clear form fields
-            setName('')
-            setAddress('')
-            setDob('')
-            setPhone('')
-            setEmail('')
-            setCountry('')
-            setDistrict('')
-            setHeight('')
-            setTa('')
-            setRole('')
-            setPassword('')
-        } catch (err) {
-            setError(err.response?.data?.message || 'Registration failed')
-            console.error('Registration error:', err)
-        } finally {
-            setLoading(false)
+    const handleCloseSuccess = () => setOpenSuccess(false);
+
+    const handleChange = (e) => {
+        setFormData({ ...formData, [e.target.name]: e.target.value });
+    };
+
+    const handleSubmit = async () => {
+        if (!formData.name || !formData.email || !formData.password || !formData.confirmPassword) {
+            setError('All required fields must be filled.');
+            return;
         }
-    }
+        if (formData.password !== formData.confirmPassword) {
+            setError('Passwords do not match.');
+            return;
+        }
+
+        setLoading(true);
+        setError(null);
+
+        try {
+            await axios.post('http://127.0.0.1:8000/api/users', {
+                ...formData, role: 'Applicant'
+            });
+
+            setOpenSuccess(true);
+            setTimeout(() => navigate('/'), 3000);
+        } catch (err) {
+            setError(err.response?.data?.message || 'Registration failed');
+        } finally {
+            setLoading(false);
+        }
+    };
 
     return (
-        <div>
-            <Paper elevation={5} sx={{m:4}}>
-                <Box sx={{ display: 'flex', flexDirection: 'column', alignItems: 'center', justifyContent: 'center', width: '100%', m: 2 }}>
-                    <h2>Register</h2>
-                    {error && <div style={{ color: 'red', marginBottom: '10px' }}>{error}</div>}
-                    <TextField
-                        label='Name in Full'
-                        value={name}
-                        onChange={(e) => setName(e.target.value)}
-                        sx={{ mb: 2, width: '50ch' }}
-                        required />
+        <Box display="flex" justifyContent="center" alignItems="center" minHeight="100vh" bgcolor="#f4f6f8">
+            <Paper elevation={6} sx={{ p: 4, maxWidth: 500, width: '90%' }}>
+                <Typography variant="h5" fontWeight="bold" textAlign="center" mb={2}>
+                    Create Your Account
+                </Typography>
 
-                    <FormControl sx={{ mb: 2, width: '50ch' }}>
-                        <InputLabel>Number</InputLabel>
-                        <OutlinedInput
-                            value={phone}
-                            onChange={(e) => setPhone(e.target.value)}
-                            type='number'
-                            startAdornment={<InputAdornment position='start'>+265</InputAdornment>}
-                            label='Number'
-                        />
-                    </FormControl>
+                {error && <Alert severity="error" sx={{ mb: 2 }}>{error}</Alert>}
 
-                    <TextField
-                        label='Email'
-                        value={email}
-                        onChange={(e) => setEmail(e.target.value)}
-                        type='email' sx={{ mb: 2, width: '50ch' }} />
+                <TextField label="Full Name" name="name" value={formData.name} onChange={handleChange} fullWidth sx={{ mb: 2 }} required />
 
-                    <TextField
-                        label='Address'
-                        value={address}
-                        onChange={(e) => setAddress(e.target.value)}
-                        multiline
-                        rows={2}
-                        sx={{ mb: 2, width: '50ch' }} />
+                <FormControl fullWidth sx={{ mb: 2 }}>
+                    <InputLabel>Phone Number</InputLabel>
+                    <OutlinedInput
+                        name="phone" type="number" value={formData.phone} onChange={handleChange}
+                        startAdornment={<InputAdornment position="start">+265</InputAdornment>}
+                        label="Phone Number"
+                    />
+                </FormControl>
 
-                    <TextField
-                        label=''
-                        value={dob}
-                        onChange={(e) => setDob(e.target.value)}
-                        type='date'
-                        sx={{ mb: 2, width: '50ch' }} />
+                <TextField label="Email" name="email" type="email" value={formData.email} onChange={handleChange} fullWidth sx={{ mb: 2 }} required />
 
-                    <TextField
-                        label='Place and Country of birth'
-                        value={country}
-                        onChange={(e) => setCountry(e.target.value)}
-                        sx={{ mb: 2, width: '50ch' }} />
+                <TextField label="Address" name="address" value={formData.address} onChange={handleChange} fullWidth sx={{ mb: 2 }} multiline rows={2} />
 
-                    <Box sx={{ mr: -0.5, display: 'flex', flexDirection: 'row' }}>
-                        <TextField 
-                        label='Village'
-                        sx={{ m: 1, width: '23ch' }} />
-                        <TextField 
-                        label='District'
-                        value={district}
-                        onChange={(e) => setDistrict(e.target.value)}
-                        sx={{ m: 1, ml: 2, width: '24ch' }} />
-                    </Box>
+                <TextField label="Date of Birth" name="dob" type="date" value={formData.dob} onChange={handleChange} fullWidth sx={{ mb: 2 }} InputLabelProps={{ shrink: true }} />
 
-                    <TextField 
-                    label='T/A'
-                    value={ta}
-                    onChange={(e) => setTa(e.target.value)}
-                    sx={{ mb: 2, width: '50ch' }} />
-                    
-                    <FormControl variant='outlined' sx={{ mb: 2, width: '50ch' }}>
-                        <InputLabel>Height</InputLabel>
-                        <OutlinedInput
-                            label='Height'
-                            value={height}
-                            onChange={(e) => setHeight(e.target.value)}
-                            type='number'
-                            startAdornment={<InputAdornment position='start'>CM</InputAdornment>}
-                        />
-                    </FormControl>
-                    
-                    <TextField
-                        label='Password'
-                        value={password}
-                        onChange={(e) => setPassword(e.target.value)}
-                        type='password'
-                        sx={{ mb: 2, width: '50ch' }} required />
+                <TextField label="Country of Birth" name="country" value={formData.country} onChange={handleChange} fullWidth sx={{ mb: 2 }} />
 
-                    <TextField
-                        label='Confirm Password'
-                        sx={{ mb: 2, width: '50ch' }} required />
-                        
-                    <Button 
-                        color='primary' 
-                        variant='contained' 
-                        onClick={handleClick} 
-                        disabled={loading}
-                        sx={{mb:4}}>
-                        {loading ? 'Registering...' : 'Register'}
-                    </Button>
-
-                    <Snackbar
-                              open={openSuccess}
-                              onClose={handleCloseSuccess}
-                              autoHideDuration={3000}
-                              anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-                            >
-                    
-                              <Alert severity='success'>Registered successful! Redirecting...</Alert>
-                            </Snackbar>
+                <Box sx={{ display: 'flex', gap: 2 }}>
+                    <TextField label="Village" name="village" value={formData.village} onChange={handleChange} sx={{ flex: 1 }} />
+                    <TextField label="District" name="district" value={formData.district} onChange={handleChange} sx={{ flex: 1 }} />
                 </Box>
+
+                <TextField label="T/A" name="ta" value={formData.ta} onChange={handleChange} fullWidth sx={{ my: 2 }} />
+
+                <FormControl fullWidth sx={{ mb: 2 }}>
+                    <InputLabel>Height</InputLabel>
+                    <OutlinedInput name="height" type="number" value={formData.height} onChange={handleChange} startAdornment={<InputAdornment position="start">CM</InputAdornment>} label="Height" />
+                </FormControl>
+
+                <TextField label="Password" name="password" type="password" value={formData.password} onChange={handleChange} fullWidth sx={{ mb: 2 }} required />
+
+                <TextField label="Confirm Password" name="confirmPassword" type="password" value={formData.confirmPassword} onChange={handleChange} fullWidth sx={{ mb: 2 }} required />
+
+                <Button variant="contained" color="primary" fullWidth onClick={handleSubmit} disabled={loading} sx={{ mb: 2 }}>
+                    {loading ? 'Registering...' : 'Register'}
+                </Button>
+
+                <Snackbar open={openSuccess} onClose={handleCloseSuccess} autoHideDuration={3000} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}>
+                    <Alert severity="success">Registered successfully! Redirecting...</Alert>
+                </Snackbar>
             </Paper>
-        </div>
-    )
+        </Box>
+    );
 }
