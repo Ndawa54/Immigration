@@ -63,7 +63,7 @@ export default function Interview() {
         <Card>
           <CardContent>
             <h2 className="text-xl font-bold mb-4">Interview Scheduling</h2>
-            <Box sx={{ p: 3, display: 'flex', justifyContent: 'center' }}>
+            <Box sx={{ p: 2, display: 'flex', justifyContent: 'center' }}>
               <TableContainer component={Paper} sx={{ maxWidth: '100%' }}>
                 <Table
                   sx={{
@@ -75,7 +75,7 @@ export default function Interview() {
                   <TableHead>
                     <TableRow>
                       <TableCell>Name</TableCell>
-                      <TableCell>Status</TableCell>
+                      {/* <TableCell>Status</TableCell> */}
                       <TableCell>Interview Date</TableCell>
                       <TableCell>Action</TableCell>
                       <TableCell>Approve</TableCell>
@@ -87,7 +87,7 @@ export default function Interview() {
                     .map((applicant) => (
                       <TableRow key={applicant.id}>
                         <TableCell>{applicant.name}</TableCell>
-                        <TableCell>{applicant.status}</TableCell>
+                        {/* <TableCell>{applicant.status}</TableCell> */}
                         <TableCell>{applicant.interviewDate}</TableCell>
                         <TableCell>
                           {applicant.status === "approve" && (
