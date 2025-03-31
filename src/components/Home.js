@@ -23,7 +23,9 @@ export default function Home() {
 
   const userId = Number(localStorage.getItem('userId'));
 
-  const handleClose = () => setOpen(false);
+  const handleClose = () => {
+    setOpen(false);
+    setErrorOpen(false)}
 
   const handlePassportChange = (e) => {
     setPassportFile(e.target.files?.[0] || null);
@@ -167,7 +169,27 @@ export default function Home() {
             >
               {loading ? <CircularProgress size={24} sx={{ color: '#fff' }} /> : 'Submit'}
             </Button>
+            
+          <Snackbar
+          open={errorOpen}
+          autoHideDuration={3000}
+          onClose={handleClose}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+          >
+            <Alert severity="warning" sx={{ width: '100%' }}>{errorMessage}</Alert>
+          </Snackbar>
+
+          <Snackbar
+          open={open}
+          autoHideDuration={3000}
+          onClose={handleClose}
+          anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
+          >
+            <Alert severity="success" sx={{ width: '100%' }}> Details Submitted Successfully...</Alert>
+          </Snackbar>
+
           </Card>
+
         )}
 
         {activeTab === 1 && (

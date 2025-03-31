@@ -223,6 +223,8 @@ export default function Approver() {
                                         destination: selectedUser.destination,
                                         reason: selectedUser.reason,
                                         description: selectedUser.description,
+                                        interview_date: selectedUser.interview_date,
+                                        interview_status: selectedUser.interview_status,
                                         status: 'approve'
                                     },
                                     { headers: { 'Content-Type': 'application/json' } }
@@ -252,6 +254,8 @@ export default function Approver() {
                                         destination: selectedUser.destination,
                                         reason: selectedUser.reason,
                                         description: selectedUser.description,
+                                        interview_date: selectedUser.interview_date,
+                                        interview_status: selectedUser.interview_status,
                                         status: 'reject'
                                     },
                                     { headers: { 'Content-Type': 'application/json' } }
