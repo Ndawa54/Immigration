@@ -14,36 +14,32 @@ export default function Login() {
 
   const handleClick = async () => {
     try {
-      const response = await axios.get('http://127.0.0.1:8000/api/users');
-      const users = response.data;
-      
-      const foundUser = users.find(user => 
-        user.name === name && user.password === password
-      );
-
-      if (foundUser) {
-        setOpenSuccess(true);
-
-        localStorage.setItem('userId', foundUser.id);
-        localStorage.setItem('role', foundUser.role);
-
-        setTimeout(() => { 
-          if (foundUser.role.toLowerCase() === 'applicant') {
-            navigate('/home', { state: { userId: foundUser.role } });
-          } else if (['verifier', 'interviewer', 'approver'].includes(foundUser.role.toLowerCase())) {
-            navigate('/dashboard', { state: { userId: foundUser.role } });
-          } else {
-            setOpenError(true);
-          }
-        }, 2000);
-      } else {
-        setOpenError(true);
-      }
+      const response = await axios.post("http://127.0.0.1:8000/api/login", {
+        name,
+        password,
+      });
+  
+      const foundUser = response.data;
+  
+      setOpenSuccess(true);
+  
+      localStorage.setItem("userId", foundUser.id);
+      localStorage.setItem("role", foundUser.role);
+  
+      setTimeout(() => {
+        if (foundUser.role.toLowerCase() === "applicant") {
+          navigate("/home", { state: { userId: foundUser.id } });
+        } else if (["verifier", "interviewer", "approver"].includes(foundUser.role.toLowerCase())) {
+          navigate("/dashboard", { state: { userId: foundUser.id } });
+        } else {
+          setOpenError(true);
+        }
+      }, 2000);
     } catch (error) {
-      console.error('Login error:', error);
       setOpenError(true);
     }
   };
+  
 
   const handleCloseError = () => setOpenError(false);
   const handleCloseSuccess = () => setOpenSuccess(false);
